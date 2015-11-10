@@ -6,11 +6,21 @@
  */
 
 #include <stdlib.h>
-#include<arpa/inet.h>
-#include<sys/socket.h>
+#include <string.h>
+#include <arpa/inet.h>
+#include <sys/socket.h>
 
 char** p2p_ping(int nb_client) {
-    return NULL;
+    char** addr;
+    
+    addr = calloc(nb_client,sizeof(char*));
+    
+    for (int i =0 ; i < nb_client ; i++ ) {
+        addr[i] = calloc(19, sizeof(char));
+        strncpy(addr[i], "127.0.0.1", 19);
+    }
+    
+    return addr;
 }
 
 int send(char* buffer, int size) {
@@ -23,6 +33,9 @@ int send(char* buffer, int size) {
         perror("Fail on socket creation");
         exit(-1);
     }
+    
+    /* init structure socket */
+    memset();
 }
 
 int recieve(void* buffer, int size) {
