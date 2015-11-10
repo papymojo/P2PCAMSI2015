@@ -13,7 +13,7 @@
 char** p2p_ping(int nb_client) {
     char** addr;
     
-    addr = calloc(nb_client,sizeof(char*));
+    addr = calloc(nb_client, sizeof(char*));
     
     for (int i =0 ; i < nb_client ; i++ ) {
         addr[i] = calloc(19, sizeof(char));
