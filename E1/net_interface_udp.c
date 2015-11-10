@@ -15,7 +15,7 @@ char** p2p_ping(int nb_client) {
     
     addr = calloc(nb_client, sizeof(char*));
     
-    for (int i =0 ; i < nb_client ; i++ ) {
+    for (int i=0 ; i < nb_client ; i++ ) {
         addr[i] = calloc(19, sizeof(char));
         strncpy(addr[i], "127.0.0.1", 19);
     }
