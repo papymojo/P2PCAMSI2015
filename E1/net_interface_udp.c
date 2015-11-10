@@ -6,6 +6,8 @@
  */
 
 #include <stdlib.h>
+#include <stdio.h>
+#include <errno.h>
 #include <string.h>
 #include <arpa/inet.h>
 #include <sys/socket.h>
@@ -23,7 +25,7 @@ char** p2p_ping(int nb_client) {
     return addr;
 }
 
-int send(char* buffer, int size) {
+int p2p_send(char* buffer, int size) {
     struct sockaddr_in si_me, si_other;
     
     int sock;
@@ -35,7 +37,8 @@ int send(char* buffer, int size) {
     }
     
     /* init structure socket */
-    memset();
+    //memset();
+    return 0;
 }
 
 int recieve(void* buffer, int size) {
