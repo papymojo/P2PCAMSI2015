@@ -25,7 +25,7 @@ char** p2p_ping(int nb_client) {
     return addr;
 }
 
-int p2p_send(char* buffer, int size) {
+int p2p_send(char* buffer, int size, int port) {
     struct sockaddr_in si_me, si_other;
     
     int sock;
@@ -37,7 +37,11 @@ int p2p_send(char* buffer, int size) {
     }
     
     /* init structure socket */
-    //memset();
+    memset((char* ) &si_me, 0, sizeof(si_me));
+    si_me.sin_family = AF_INET;
+    si_me.sin_port = 
+    
+    
     return 0;
 }
 
