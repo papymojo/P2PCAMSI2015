@@ -21,8 +21,6 @@ extern "C" {
     
 char** p2p_ping(int nb_client, int port);
 
-int connect(char* addr, int port);
-
 int send(void* buffer, int size);
 
 int recieve(void* buffer, int size);
