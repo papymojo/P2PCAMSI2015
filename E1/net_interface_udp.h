@@ -17,13 +17,13 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-
+#define MULTICAST_ADDR "127.0.0.1"
     
-char** p2p_ping(int nb_client, int port);
+char** p2p_ping(int nb_client,char * ip,int port);
 
-int p2p_send(char* buffer, int size, int port);
+int p2p_send(char* buffer, int size);
 
-int recieve(void* buffer, int size);
+int p2p_recieve(void* buffer, int size);
 
 
 #ifdef __cplusplus
