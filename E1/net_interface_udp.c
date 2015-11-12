@@ -70,17 +70,25 @@ char** p2p_ping(int nb_client,char* ip,int port) {
     addr[0] = calloc(19, sizeof(char));
     strncpy(addr[0],ip,19);
     p2p_send(ip,19);
+    
+    /* attente de clients */
+    int r;
     for (int i=1 ; i < nb_client ; i++ ) {
-        int r =0;
+        r = 0;
         p2p_recieve(buffer,19);
+        
+        /* on vérifie qu'on connais pas déjà ce client */
         for (int j=0 ; j < i;j++) {
             if (!strcmp(buffer,addr[j])) {
                 r++;
             }
         }
-        if (r = 0) {
+        if (r == 0) {
             addr[i] = calloc(19, sizeof(char));
             strncpy(addr[i], buffer, 19);
+        }
+        else {
+            -- i;
         }
         p2p_send(ip,19);
     }
@@ -89,19 +97,22 @@ char** p2p_ping(int nb_client,char* ip,int port) {
 }
 
 int p2p_send(char* buffer, int size) {
-            if (sendto(fdc, buffer, size, 0,(struct sockaddr *) &datac, sizeof(struct sockaddr_in)) < 0)
-        {
-            perror("sendto");
-            exit(1);
-        }
+    if (sendto(fdc, buffer, size, 0,(struct sockaddr *) &datac, sizeof(struct sockaddr_in)) < 0)
+    {
+        perror("sendto");
+        exit(1);
+    }
     return 0;
 }
 
 int p2p_recieve(void* buffer, int size) {
     socklen_t datasize = (socklen_t) sizeof(struct sockaddr_in);
-    if ( recvfrom( fds, buffer, size, 0, (struct sockaddr *) &datac, &datasize) < 0) {
+    if (recvfrom( fds, buffer, size-1, 0, (struct sockaddr *) &datac, &datasize) < 0) {
         perror("recevievefrom");
         exit(1);
     }
+    buffer[size] = '\0';
+    
+    return 0;
 }
 
