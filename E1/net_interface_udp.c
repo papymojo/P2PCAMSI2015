@@ -90,6 +90,7 @@ char** p2p_ping(int nb_client,char* ip,int port) {
         else {
             -- i;
         }
+        sleep(10);
         p2p_send(ip,19);
     }
     
