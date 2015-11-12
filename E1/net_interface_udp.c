@@ -81,9 +81,8 @@ char** p2p_ping(int nb_client,char* ip,int port) {
         if (r = 0) {
             addr[i] = calloc(19, sizeof(char));
             strncpy(addr[i], buffer, 19);
-            p2p_send(ip,19);
         }
-
+        p2p_send(ip,19);
     }
     
     return addr;
