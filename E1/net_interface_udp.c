@@ -105,7 +105,7 @@ int p2p_send(char* buffer, int size) {
     return 0;
 }
 
-int p2p_recieve(void* buffer, int size) {
+int p2p_recieve(char* buffer, int size) {
     socklen_t datasize = (socklen_t) sizeof(struct sockaddr_in);
     if (recvfrom( fds, buffer, size-1, 0, (struct sockaddr *) &datac, &datasize) < 0) {
         perror("recevievefrom");
