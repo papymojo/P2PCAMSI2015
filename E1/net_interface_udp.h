@@ -17,7 +17,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-#define MULTICAST_ADDR "127.0.0.1"
+#define MULTICAST_ADDR "130.120.215.255"
     
 char** p2p_ping(int nb_client,char * ip,int port);
 
