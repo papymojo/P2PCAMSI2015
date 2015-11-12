@@ -23,7 +23,7 @@ char** p2p_ping(int nb_client,char * ip,int port);
 
 int p2p_send(char* buffer, int size);
 
-int p2p_recieve(void* buffer, int size);
+int p2p_recieve(char* buffer, int size);
 
 
 #ifdef __cplusplus
