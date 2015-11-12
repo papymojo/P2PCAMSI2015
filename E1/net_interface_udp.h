@@ -14,6 +14,8 @@
 #ifndef NET_INTERFACE_UDP_H
 #define NET_INTERFACE_UDP_H
 
+#define _XOPEN_SOURCE >= 500
+
 #ifdef __cplusplus
 extern "C" {
 #endif
