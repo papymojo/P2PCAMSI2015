@@ -76,7 +76,7 @@ char** p2p_ping(int nb_client,char* ip,int port) {
     for (int i=1 ; i < nb_client ; i++ ) {
         r = 0;
         p2p_recieve(buffer,19);
-        printf("%s\n",buffer);
+
         /* on vérifie qu'on connais pas déjà ce client */
         for (int j=0 ; j < i;j++) {
             if (!strcmp(buffer,addr[j])) {
@@ -84,18 +84,23 @@ char** p2p_ping(int nb_client,char* ip,int port) {
             }
         }
         if (r == 0) {
+            printf("%s\n",buffer);
             addr[i] = calloc(19, sizeof(char));
             strncpy(addr[i], buffer, 19);
         }
         else {
             -- i;
         }
-        for(int i = 0 ; i < 10 ; i++) {
+        p2p_send(ip,19); 
+    }
+    
+    printf("Coucou");
+    
+    for(int i = 0 ; i < 10 ; i++) {
             sleep(1);
             p2p_send(ip,19);
-        }
     }
-    p2p_send(ip,19); 
+    
     return addr;
 }
 
