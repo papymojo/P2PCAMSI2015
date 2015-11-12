@@ -76,7 +76,6 @@ char** p2p_ping(int nb_client,char* ip,int port) {
     for (int i=1 ; i < nb_client ; i++ ) {
         r = 0;
         p2p_recieve(buffer,19);
-
         /* on vérifie qu'on connais pas déjà ce client */
         for (int j=0 ; j < i;j++) {
             if (!strcmp(buffer,addr[j])) {
@@ -100,7 +99,6 @@ char** p2p_ping(int nb_client,char* ip,int port) {
             sleep(1);
             p2p_send(ip,19);
     }
-    
     return addr;
 }
 
