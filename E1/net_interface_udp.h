@@ -20,8 +20,10 @@
 extern "C" {
 #endif
 #define MULTICAST_ADDR "10.42.0.255"
-    
-char** p2p_ping(int nb_client,char * ip,int port);
+
+/* Recupère les adresses des machines sur le réseau pour créer un groupe.
+ */
+char** p2p_ping(int nb_client, char * ip,int port, unsigned int timeout);
 
 int p2p_send(char* buffer, int size,int port);
 
