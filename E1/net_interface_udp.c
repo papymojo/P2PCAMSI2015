@@ -75,7 +75,7 @@ char** p2p_ping(int nb_client,char* ip,int port) {
     int r;
     for (int i=1 ; i < nb_client ; i++ ) {
         r = 0;
-        printf("En attente de reception ...");
+        printf("En attente de reception ...\n");
         p2p_recieve(buffer,19);
         printf("Recieved: %s\n", buffer);
         /* on vérifie qu'on connais pas déjà ce client */
@@ -95,10 +95,11 @@ char** p2p_ping(int nb_client,char* ip,int port) {
         p2p_send(ip,19); 
     }
     
-    printf("groupe complet");
+    printf("groupe complet\n");
     
     for(int i = 0 ; i < 10 ; i++) {
             sleep(1);
+            printf("Send addr on broadcast\n");
             p2p_send(ip,19);
     }
     return addr;
