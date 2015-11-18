@@ -26,25 +26,6 @@ char** p2p_ping(int nb_client,char* ip,int port) {
     addr = calloc(nb_client, sizeof(char*));
     buffer = calloc(19,sizeof(char));
     
-    //open udp client
-    if ((fdc = socket(AF_INET, SOCK_DGRAM, 0)) < 0)
-    {
-        perror("socket");
-        exit(1);
-    }
-    
-    //enable use of broadcast
-    int broadcastenable = 1;
-    if (setsockopt(fdc,SOL_SOCKET,SO_BROADCAST,&broadcastenable,sizeof(broadcastenable)) < 0) {
-        perror("setsockopt");
-        exit(1);
-    }
-    
-    memset(&datac,0,sizeof(datac));
-    datac.sin_family = AF_INET;
-    datac.sin_addr.s_addr = inet_addr(MULTICAST_ADDR);
-    datac.sin_port=htons(port);
-    
     //open udp server
     if ((fds = socket(AF_INET, SOCK_DGRAM, 0)) < 0)
     {
@@ -69,7 +50,7 @@ char** p2p_ping(int nb_client,char* ip,int port) {
     //communication (envoi de l'addresse dans le reseau)
     addr[0] = calloc(19, sizeof(char));
     strncpy(addr[0],ip,19);
-    p2p_send(ip,19);
+    p2p_send(ip,19,port);
     
     /* attente de clients */
     int r;
@@ -92,25 +73,43 @@ char** p2p_ping(int nb_client,char* ip,int port) {
         else {
             -- i;
         }
-        p2p_send(ip,19); 
+        p2p_send(ip,19,port); 
     }
     
     printf("groupe complet\n");
     
     for(int i = 0 ; i < 10 ; i++) {
-            sleep(1);
             printf("Send addr on broadcast\n");
-            p2p_send(ip,19);
+            p2p_send(ip,19,port);
     }
     return addr;
 }
 
-int p2p_send(char* buffer, int size) {
+int p2p_send(char* buffer, int size,int port) {
+        //open udp client
+    if ((fdc = socket(AF_INET, SOCK_DGRAM, 0)) < 0)
+    {
+        perror("socket");
+        exit(1);
+    }
+    
+    //enable use of broadcast
+    int broadcastenable = 1;
+    if (setsockopt(fdc,SOL_SOCKET,SO_BROADCAST,&broadcastenable,sizeof(broadcastenable)) < 0) {
+        perror("setsockopt");
+        exit(1);
+    }
+    
+    memset(&datac,0,sizeof(datac));
+    datac.sin_family = AF_INET;
+    datac.sin_addr.s_addr = inet_addr(MULTICAST_ADDR);
+    datac.sin_port=htons(port);
     if (sendto(fdc, buffer, size, 0,(struct sockaddr *) &datac, sizeof(struct sockaddr_in)) < 0)
     {
         perror("sendto");
         exit(1);
     }
+    close(fdc);
     return 0;
 }
 
