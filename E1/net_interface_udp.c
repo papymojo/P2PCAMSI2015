@@ -77,11 +77,6 @@ char** p2p_ping(int nb_client,char* ip,int port) {
     }
     
     printf("groupe complet\n");
-    
-    for(int i = 0 ; i < 10 ; i++) {
-            printf("Send addr on broadcast\n");
-            p2p_send(ip,19,port);
-    }
     return addr;
 }
 
