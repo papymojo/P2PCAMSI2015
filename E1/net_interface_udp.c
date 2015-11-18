@@ -53,28 +53,28 @@ char** p2p_ping(int nb_client,char* ip,int port) {
     p2p_send(ip,19,port);
     
     /* attente de clients */
-    int r;
-    for (int i=1 ; i < nb_client ; i++ ) {
-        r = 0;
+    int r, i=1;
+    do {
+        
         printf("En attente de reception ...\n");
         p2p_recieve(buffer,19);
         printf("Recieved: %s\n", buffer);
-        /* on vérifie qu'on connais pas déjà ce client */
-        for (int j=0 ; j < i;j++) {
+        
+        /* on vérifie qu'on ne connais pas déjà ce client */
+        r = 0;
+        for (int j=0 ; j<i ; ++j) {
             if (!strcmp(buffer,addr[j])) {
                 r++;
             }
         }
-        if (r == 0) {
-            printf("%s\n",buffer);
+        if (r == 0) { // si on connais pas on ajoute à la liste de clients
             addr[i] = calloc(19, sizeof(char));
             strncpy(addr[i], buffer, 19);
-            p2p_send(ip,19,port); 
+            p2p_send(ip,19,port);
+            ++i;
         }
-        else {
-            -- i;
-        }
-    }
+        
+    } while(i < nb_client);
     
     printf("groupe complet\n");
     return addr;
