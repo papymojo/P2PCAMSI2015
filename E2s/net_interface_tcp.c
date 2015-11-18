@@ -15,7 +15,6 @@
 #include "net_interface_tcp.h"
 
 struct sockaddr_in datas;
-struct sockddr datac;
 int fdl;
 int fdc;
 int f;
@@ -38,10 +37,22 @@ int tcps_file(char * file,char * ip,int port) {
 	fprintf(stderr, "listen : \n");
 	exit(EXIT_FAILURE);
     }
-    if (accept(fdl, &datac, sizeof(datac)) < 0) {
-        fprintf(stderr,"accept : \n");
+    for (;;) {
+        if ((fdc = accept(fdl, NULL, NULL)) < 0) {
+            fprintf(stderr,"accept : \n");
+        }
+        int pid = fork();
+        switch(pid){
+            case 0 :
+                if ( close(fdc) < 0 ) {
+                    fprintf(stderr, "ECHOSERV: Error calling close()\n");
+                    exit(EXIT_FAILURE);
+                }
+                    exit(0);
+            default:
+                break;
+        }
     }
-    
 
 }
 
