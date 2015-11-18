@@ -69,11 +69,11 @@ char** p2p_ping(int nb_client,char* ip,int port) {
             printf("%s\n",buffer);
             addr[i] = calloc(19, sizeof(char));
             strncpy(addr[i], buffer, 19);
+            p2p_send(ip,19,port); 
         }
         else {
             -- i;
         }
-        p2p_send(ip,19,port); 
     }
     
     printf("groupe complet\n");
