@@ -55,7 +55,7 @@ int tcps_file(char * file,char * ip,int port) {
                     exit(EXIT_FAILURE);
                 }
                 
-                    exit(0);
+                    break;
             default:
                 break;
         }
