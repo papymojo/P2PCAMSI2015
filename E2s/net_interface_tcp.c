@@ -1,5 +1,5 @@
 /*
- * File: net_interface_udp.c
+ * File: net_interface_tcp.c
  * Author: Benjamin
  * 
  * Created on 10 novembre 2015, 13:50
@@ -48,9 +48,8 @@ int tcps_file(char * file,char * ip,int port) {
                     fprintf(stderr,"fopen : \n");
                     exit(EXIT_FAILURE);
                 }
-                while () {
-                   
-                }
+                    printf("connecté\n");
+               
                 if ( close(fdc) < 0 ) {
                     fprintf(stderr, "ECHOSERV: Error calling close()\n");
                     exit(EXIT_FAILURE);
@@ -69,7 +68,7 @@ int tcps_send(char* buffer, int size) {
     return 0;
 }
 
-int tcps_send(char* buffer, int size) {
+int tcps_recv(char* buffer, int size) {
     send(fdc, (const void *)buffer,size, 0);
     return 0;
 }

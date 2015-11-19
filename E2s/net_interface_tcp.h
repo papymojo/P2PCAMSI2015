@@ -6,7 +6,7 @@
 
 /* 
  * File:   net_interface_udp.h
- * Author: maignial
+ * Author: Benjamin
  *
  * Created on 10 novembre 2015, 13:57
  */
@@ -24,7 +24,7 @@ int tcps_file(char * file,char * ip,int port);
 
 int tcps_send(char* buffer, int size);
 
-int tcps_send(char* buffer, int size);
+int tcps_recv(char* buffer, int size);
 
 
 #ifdef __cplusplus
