@@ -1,6 +1,6 @@
 /*
  * File: net_interface_udp.c
- * Author: Olivier
+ * Author: Benjamin
  * 
  * Created on 10 novembre 2015, 13:50
  */
@@ -17,7 +17,7 @@
 struct sockaddr_in datas;
 int fdl;
 int fdc;
-int f;
+int filed;
 
 int tcps_file(char * file,char * ip,int port) {
     if ( (fdl = socket(AF_INET, SOCK_STREAM, 0)) < 0 ) {
@@ -44,10 +44,18 @@ int tcps_file(char * file,char * ip,int port) {
         int pid = fork();
         switch(pid){
             case 0 :
+                if((filed = fopen(file,"r")) < 0) {
+                    fprintf(stderr,"fopen : \n");
+                    exit(EXIT_FAILURE);
+                }
+                while () {
+                   
+                }
                 if ( close(fdc) < 0 ) {
                     fprintf(stderr, "ECHOSERV: Error calling close()\n");
                     exit(EXIT_FAILURE);
                 }
+                
                     exit(0);
             default:
                 break;
