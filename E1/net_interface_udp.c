@@ -70,7 +70,7 @@ char** p2p_ping(int nb_client, char* ip, int port, unsigned int timeout) {
     do {
         
         printf("En attente de reception ...\n");
-        if (p2p_recieve(buffer,19) == EINTR) {
+        if (p2p_recieve(buffer,19) == -1) {
             return addr;
         }
         
@@ -127,7 +127,7 @@ int p2p_recieve(char* buffer, int size) {
     socklen_t datasize = (socklen_t) sizeof(struct sockaddr_in);
     int r = recvfrom( fds, buffer, size-1, 0, (struct sockaddr *) &datac, &datasize);
     
-    if (r < 0 && r != EINTR) {
+    if (r < 0 && errno != EINTR) {
         perror("recevievefrom");
         exit(1);
     }
