@@ -15,11 +15,11 @@
 #include "net_interface_tcp.h"
 
 struct sockaddr_in datas;
+char filename[BLOCK];
 int fdl;
 int fdc;
-int filed;
 
-int tcps_file(char * file,int port) {
+int tcps_file(int port) {
     if ( (fdl = socket(AF_INET, SOCK_STREAM, 0)) < 0 ) {
 	fprintf(stderr, "socket : \n");
 	exit(EXIT_FAILURE);
@@ -29,7 +29,7 @@ int tcps_file(char * file,int port) {
     datas.sin_addr.s_addr = htonl(INADDR_ANY);
     datas.sin_port        = htons(port);
     
-    if ( bind(fdl, (struct sockaddr *) &datas, sizeof(datas)) < 0 ) {
+    if ( bind(fdl, (struct sockaddr *) &datas, sizeof(struct sockaddr)) < 0 ) {
 	fprintf(stderr, "bind : \n");
 	exit(EXIT_FAILURE);
     }
@@ -37,17 +37,19 @@ int tcps_file(char * file,int port) {
 	fprintf(stderr, "listen : \n");
 	exit(EXIT_FAILURE);
     }
+    printf("en écoute \n");
     for (;;) {
-        if ((fdc = accept(fdl, NULL, NULL)) < 0) {
+        if ((fdc = accept(fdl, NULL, 0)) < 0) {
             fprintf(stderr,"accept : \n");
         }
         int pid = fork();
         switch(pid){
             case 0 :
                     printf("connecté\n");
-                
+                    tcps_recv(filename,BLOCK);
+                    tcps_sendfile(filename);
                 if ( close(fdc) < 0 ) {
-                    fprintf(stderr, "ECHOSERV: Error calling close()\n");
+                    fprintf(stderr, "close : \n");
                     exit(EXIT_FAILURE);
                 }
                     exit(0);
@@ -56,7 +58,22 @@ int tcps_file(char * file,int port) {
                 break;
         }
     }
+}
 
+int tcps_sendfile(char * file) {
+    char buffer[BLOCK];
+    printf("envoi du fichier %s au client", file);
+    FILE *fp = fopen(file, "r");
+    if (fp == NULL) {
+        printf("ERROR:\n", file);
+        exit(1);
+    }
+    bzero(buffer, BLOCK);
+    int f_block_sz;
+    while ((f_block_sz = fread(buffer, sizeof (char), BLOCK, fp)) > 0) {
+        tcps_send(buffer, BLOCK);
+        bzero(buffer, BLOCK);
+    }
 }
 
 int tcps_send(char* buffer, int size) {
@@ -65,7 +82,7 @@ int tcps_send(char* buffer, int size) {
 }
 
 int tcps_recv(char* buffer, int size) {
-    recv(fdc, (const void *)buffer,size, 0);
+    recv(fdc, (void *)buffer,size, 0);
     return 0;
 }
 

@@ -15,12 +15,12 @@
 #define NET_INTERFACE_UDP_H
 
 #define _XOPEN_SOURCE >= 500
-
+#define BLOCK 4096
 #ifdef __cplusplus
 extern "C" {
 #endif
-#define MAX_LINE           (10)    
-int tcps_file(char * file,int port);
+#define MAX_LINE 10   
+int tcps_file(int port);
 
 int tcps_send(char* buffer, int size);
 

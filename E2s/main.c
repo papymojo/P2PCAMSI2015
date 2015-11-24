@@ -12,11 +12,11 @@
  * 
  */
 int main(int argc, char** argv) {
-    if (argc != 3) {
-        printf("Use : %s <port> <folder>",argv[0]);
+    if (argc != 2) {
+        printf("Use : %s <port>",argv[0]);
         exit(1);
     }
-    tcps_file(argv[2],atoi(argv[1]));
+    tcps_file(atoi(argv[1]));
     return (EXIT_SUCCESS);
 }
 
