@@ -50,6 +50,10 @@ int tcps_file(int port) {
                     tcps_sendfile(filename);
                     sleep(1);
                     printf("timeout\n");
+                if ( shutdown(fdc) < 0 ) {
+                    fprintf(stderr, "shutdown : \n");
+                    exit(EXIT_FAILURE);
+                }
                 if ( close(fdc) < 0 ) {
                     fprintf(stderr, "close : \n");
                     exit(EXIT_FAILURE);
