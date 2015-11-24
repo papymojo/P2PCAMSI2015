@@ -20,7 +20,7 @@
 extern "C" {
 #endif
 #define MAX_LINE           (10)    
-int tcps_file(char * file,char * ip,int port);
+int tcps_file(char * file,int port);
 
 int tcps_send(char* buffer, int size);
 

@@ -19,7 +19,7 @@ int fdl;
 int fdc;
 int filed;
 
-int tcps_file(char * file,char * ip,int port) {
+int tcps_file(char * file,int port) {
     if ( (fdl = socket(AF_INET, SOCK_STREAM, 0)) < 0 ) {
 	fprintf(stderr, "socket : \n");
 	exit(EXIT_FAILURE);
@@ -44,17 +44,13 @@ int tcps_file(char * file,char * ip,int port) {
         int pid = fork();
         switch(pid){
             case 0 :
-                if((filed = fopen(file,"r")) < 0) {
-                    fprintf(stderr,"fopen : \n");
-                    exit(EXIT_FAILURE);
-                }
                     printf("connecté\n");
-               
+                
                 if ( close(fdc) < 0 ) {
                     fprintf(stderr, "ECHOSERV: Error calling close()\n");
                     exit(EXIT_FAILURE);
                 }
-                
+                    exit(0);
                     break;
             default:
                 break;
@@ -64,12 +60,12 @@ int tcps_file(char * file,char * ip,int port) {
 }
 
 int tcps_send(char* buffer, int size) {
-    recv(fdc, (void *) buffer, size, 0);
+    send(fdc, (void *) buffer, size, 0);
     return 0;
 }
 
 int tcps_recv(char* buffer, int size) {
-    send(fdc, (const void *)buffer,size, 0);
+    recv(fdc, (const void *)buffer,size, 0);
     return 0;
 }
 
