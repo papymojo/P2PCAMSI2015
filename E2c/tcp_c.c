@@ -10,6 +10,7 @@
 #include <sys/socket.h>
 #include <netdb.h>
 
+/* return the socket descriptor */
 int p2p_tcp_connect (char* addr, int port_num) {
     int sock_fd;
     struct sockaddr_in sin = {0};
@@ -29,5 +30,5 @@ int p2p_tcp_connect (char* addr, int port_num) {
         exit(-1);
     }
     printf("connected!\n");
-    return 0;
+    return sock_fd;
 }
