@@ -48,7 +48,6 @@ int tcps_file(int port) {
                     printf("connecté\n");
                     tcps_recv(filename,BLOCK);
                     tcps_sendfile(filename);
-                    sleep(1);
                 if ( close(fdc) < 0 ) {
                     fprintf(stderr, "close : \n");
                     exit(EXIT_FAILURE);
@@ -63,7 +62,7 @@ int tcps_file(int port) {
 
 int tcps_sendfile(char * file) {
     char buffer[BLOCK];
-    printf("envoi du fichier %s au client", file);
+    printf("envoi du fichier %s au client\n", file);
     FILE *fp = fopen(file, "r");
     if (fp == NULL) {
         printf("ERROR:\n", file);
@@ -72,7 +71,7 @@ int tcps_sendfile(char * file) {
     bzero(buffer, BLOCK);
     int f_block_sz;
     while ((f_block_sz = fread(buffer, sizeof (char), BLOCK, fp)) > 0) {
-        tcps_send(buffer, BLOCK);
+        tcps_send(buffer, f_block_sz);
         bzero(buffer, BLOCK);
     }
     printf("Fin d'envoi\n");
