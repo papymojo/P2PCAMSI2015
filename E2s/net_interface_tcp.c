@@ -48,6 +48,8 @@ int tcps_file(int port) {
                     printf("connecté\n");
                     tcps_recv(filename,BLOCK);
                     tcps_sendfile(filename);
+                    sleep(1);
+                    printf("timeout\n");
                 if ( close(fdc) < 0 ) {
                     fprintf(stderr, "close : \n");
                     exit(EXIT_FAILURE);
