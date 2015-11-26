@@ -15,9 +15,23 @@
 #include "net_interface_tcp.h"
 
 struct sockaddr_in datas;
-char filename[BLOCK];
+char queryrecv[BLOCK];
 int fdl;
 int fdc;
+
+char * getfilename(char * query) {
+     char *token;
+     const char s[2] = SEPARATOR;
+     token = strtok(query, s);
+     return token;
+}
+int getblocknumber(char * query) {
+     char *token;
+     const char s[2] = SEPARATOR;
+     strtok(query, s);
+     token = strtok(NULL, s);
+     return atoi(token);
+}
 
 int tcps_file(int port) {
     if ( (fdl = socket(AF_INET, SOCK_STREAM, 0)) < 0 ) {
@@ -46,8 +60,8 @@ int tcps_file(int port) {
         switch(pid){
             case 0 :
                     printf("connecté\n");
-                    tcps_recv(filename,BLOCK);
-                    tcps_sendfile(filename);
+                    tcps_recv(queryrecv,BLOCK);
+                    tcps_sendfile(getfilename(queryrecv),getblocknumber(queryrecv));
                     sleep(1);
                     printf("timeout\n");
                 if ( shutdown(fdc,SHUT_RDWR) < 0 ) {
@@ -66,7 +80,7 @@ int tcps_file(int port) {
     }
 }
 
-int tcps_sendfile(char * file) {
+int tcps_sendfile(char * file,int block) {
     char buffer[BLOCK];
     printf("envoi du fichier %s au client\n", file);
     FILE *fp = fopen(file, "r");
@@ -76,7 +90,8 @@ int tcps_sendfile(char * file) {
     }
     bzero(buffer, BLOCK);
     int f_block_sz;
-    while ((f_block_sz = fread(buffer, sizeof (char), BLOCK, fp)) > 0) {
+    fseek(fp,block*BLOCK,SEEK_SET);
+    if ((f_block_sz = fread(buffer, sizeof (char), BLOCK, fp)) > 0) {
         tcps_send(buffer, f_block_sz);
         bzero(buffer, BLOCK);
     }

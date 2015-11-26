@@ -16,6 +16,7 @@
 
 #define _XOPEN_SOURCE >= 500
 #define BLOCK 4096
+#define SEPARATOR "!"
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -25,7 +26,6 @@ int tcps_file(int port);
 int tcps_send(char* buffer, int size);
 
 int tcps_recv(char* buffer, int size);
-
 
 #ifdef __cplusplus
 }
