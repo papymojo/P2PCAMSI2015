@@ -25,6 +25,7 @@ char * getfilename(char * query) {
      
      char* end = strchr(token, SEPARATOR);
      *end = '\0';
+
      
      return token;
 }
