@@ -18,6 +18,8 @@
 extern "C" {
 #endif
 
+#define DATA_BLOCK 4096
+    
 int p2p_tcp_connect (char* addr, int port_num);
 
 #ifdef __cplusplus
