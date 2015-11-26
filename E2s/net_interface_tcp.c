@@ -91,7 +91,7 @@ int tcps_sendblock(char * file,int block) {
     char buffer[BLOCK];
     struct stat info;
     FILE *fp = fopen(file, "r+");
-    fstat(fp, &info);
+    fstat(fileno(fp), &info);
     if (fp == NULL) {
         printf("ERROR:%s\n", file);
         exit(1);
