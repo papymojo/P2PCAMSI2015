@@ -60,10 +60,13 @@ int tcps_file(int port) {
         switch(pid){
             case 0 :
                     printf("connecté\n");
-                    tcps_recv(queryrecv,BLOCK);
-                    tcps_sendfile(getfilename(queryrecv),getblocknumber(queryrecv));
-                    sleep(1);
-                    printf("timeout\n");
+                    do {
+                        tcps_recv(queryrecv,BLOCK);
+                        printf("ask for block number : %d\n",getblocknumber(queryrecv));
+                        tcps_sendfile(getfilename(queryrecv),getblocknumber(queryrecv));
+                        sleep(1);
+                        printf("timeout\n");
+                    } while (!strcmp(queryrecv,UNCONNECT));
                 if ( shutdown(fdc,SHUT_RDWR) < 0 ) {
                     fprintf(stderr, "shutdown : \n");
                     exit(EXIT_FAILURE);
