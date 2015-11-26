@@ -62,7 +62,7 @@ int tcps_file(int port) {
                     printf("connecté\n");
                     do {
                         tcps_recv(queryrecv,BLOCK);
-                        if (strcmp(queryrecv,UNCONNECT)!=0) {
+                        if (strcmp(getfilename(queryrecv),UNCONNECT)!=0) {
                             printf("ask for block number : %d of the file %s\n",getblocknumber(queryrecv),getfilename(queryrecv));
                             tcps_sendblock(getfilename(queryrecv),getblocknumber(queryrecv));
                             usleep(10);
@@ -70,7 +70,7 @@ int tcps_file(int port) {
                         } else {
                             printf("GoodBye!");
                         }
-                    } while (strcmp(queryrecv,UNCONNECT)!=0);
+                    } while (strcmp(getfilename(queryrecv),UNCONNECT)!=0);
                 if ( shutdown(fdc,SHUT_RDWR) < 0 ) {
                     fprintf(stderr, "shutdown : \n");
                     exit(EXIT_FAILURE);
