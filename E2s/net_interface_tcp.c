@@ -24,8 +24,8 @@ char * getfilename(char * query) {
      strcpy(token, query);
      
      char* end = strchr(token, SEPARATOR);
-     end = '\0';
-     
+     *end = '\0';
+
      return token;
 }
 int getblocknumber(char * query) {
