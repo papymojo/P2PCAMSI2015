@@ -66,7 +66,7 @@ int tcps_file(int port) {
                         tcps_sendfile(getfilename(queryrecv),getblocknumber(queryrecv));
                         sleep(1);
                         printf("timeout\n");
-                    } while (strcmp(queryrecv,UNCONNECT));
+                    } while (strcmp(queryrecv,UNCONNECT)!=0);
                 if ( shutdown(fdc,SHUT_RDWR) < 0 ) {
                     fprintf(stderr, "shutdown : \n");
                     exit(EXIT_FAILURE);
