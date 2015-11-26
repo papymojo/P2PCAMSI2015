@@ -88,7 +88,7 @@ int tcps_sendfile(char * file,int block) {
     printf("envoi du fichier %s au client\n", file);
     FILE *fp = fopen(file, "r");
     if (fp == NULL) {
-        printf("ERROR:\n", file);
+        printf("ERROR:%s\n", file);
         exit(1);
     }
     bzero(buffer, BLOCK);
