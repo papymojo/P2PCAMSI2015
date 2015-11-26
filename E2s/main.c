@@ -13,7 +13,7 @@
  */
 int main(int argc, char** argv) {
     if (argc != 2) {
-        printf("Use : %s <port>",argv[0]);
+        printf("Use : %s <port>\n",argv[0]);
         exit(1);
     }
     tcps_file(atoi(argv[1]));
