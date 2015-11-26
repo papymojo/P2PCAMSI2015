@@ -64,7 +64,7 @@ int tcps_file(int port) {
                         tcps_recv(queryrecv,BLOCK);
                         printf("ask for block number : %d\n",getblocknumber(queryrecv));
                         tcps_sendfile(getfilename(queryrecv),getblocknumber(queryrecv));
-                        sleep(1);
+                        usleep(10);
                         printf("timeout\n");
                     } while (strcmp(queryrecv,UNCONNECT)!=0);
                 if ( shutdown(fdc,SHUT_RDWR) < 0 ) {
@@ -86,7 +86,7 @@ int tcps_file(int port) {
 int tcps_sendfile(char * file,int block) {
     char buffer[BLOCK];
     printf("envoi du fichier %s au client\n", file);
-    FILE *fp = fopen(file, "r");
+    FILE *fp = fopen(file, "r+");
     if (fp == NULL) {
         printf("ERROR:%s\n", file);
         exit(1);
