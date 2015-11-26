@@ -12,7 +12,7 @@
 #include <unistd.h>
 #include <arpa/inet.h>
 #include <sys/socket.h>
-#include <bits/stat.h>
+#include <sys/stat.h>
 #include "net_interface_tcp.h"
 
 struct sockaddr_in datas;
