@@ -12,6 +12,7 @@
 #include <unistd.h>
 #include <arpa/inet.h>
 #include <sys/socket.h>
+#include <bits/stat.h>
 #include "net_interface_tcp.h"
 
 struct sockaddr_in datas;
@@ -88,17 +89,24 @@ int tcps_file(int port) {
 
 int tcps_sendblock(char * file,int block) {
     char buffer[BLOCK];
+    struct stat info;
     FILE *fp = fopen(file, "r+");
+    fstat(fp, &info);
     if (fp == NULL) {
         printf("ERROR:%s\n", file);
         exit(1);
     }
     bzero(buffer, BLOCK);
     int f_block_sz;
-    fseek(fp,block*BLOCK,SEEK_SET);
-    if ((f_block_sz = fread(buffer, sizeof (char), BLOCK, fp)) > 0) {
-        tcps_send(buffer, f_block_sz);
-        bzero(buffer, BLOCK);
+    if (block*BLOCK >= info.st_size) {
+        tcps_send("EXIT!", 6);
+        printf("EndOfFile\n");
+    } else {
+        fseek(fp,block*BLOCK,SEEK_SET);
+        if ((f_block_sz = fread(buffer, sizeof (char), BLOCK, fp)) > 0) {
+            tcps_send(buffer, f_block_sz);
+            bzero(buffer, BLOCK);
+        }
     }
     printf("Fin d'envoi\n");
 }
