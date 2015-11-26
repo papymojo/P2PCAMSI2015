@@ -20,17 +20,16 @@ int fdl;
 int fdc;
 
 char * getfilename(char * query) {
-     char *token;
-     const char s[2] = SEPARATOR;
-     token = strtok(query, s);
+     char *token = malloc(strlen(query));
+     strcpy(token, query);
+     
+     char* end = strchr(token, SEPARATOR);
+     end = '\0';
+     
      return token;
 }
 int getblocknumber(char * query) {
-     char *token;
-     const char s[2] = SEPARATOR;
-     strtok(query, s);
-     token = strtok(NULL, s);
-     return atoi(token);
+    return atoi(strchr(query, SEPARATOR)+1);
 }
 
 int tcps_file(int port) {

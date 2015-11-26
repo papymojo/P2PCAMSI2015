@@ -16,7 +16,7 @@
 
 #define _XOPEN_SOURCE >= 500
 #define BLOCK 4096
-#define SEPARATOR "!"
+#define SEPARATOR '!'
 #define UNCONNECT "EXIT!"
 #ifdef __cplusplus
 extern "C" {
