@@ -40,7 +40,7 @@ int tcps_scan(char * filename) {
     char * answer;
     answer = calloc(128,sizeof(char));
     if(fstat(open(filename), &info) !=0){
-        answer = sprintf("OK!%d",info.st_size);
+        sprintf(answer,"OK!%d",(int)info.st_size);
         tcps_send(answer,128);
     } else {
         tcps_send("KO!",4);
@@ -79,7 +79,7 @@ int tcps_file(int port) {
                     do {
                         tcps_recv(queryrecv,BLOCK);
                         if (strcmp(getfilename(queryrecv),SCAN)) {
-                            tcps_scan(getfilename(queryrecv[5]));
+                            tcps_scan(getfilename(queryrecv+5));
                         } else if (strcmp(getfilename(queryrecv),UNCONNECT)!=0) {
                             printf("ask for block number : %d of the file %s\n",getblocknumber(queryrecv),getfilename(queryrecv));
                             tcps_sendblock(getfilename(queryrecv),getblocknumber(queryrecv));
