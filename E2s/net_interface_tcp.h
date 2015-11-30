@@ -19,6 +19,7 @@
 #define SEPARATOR '!'
 #define UNCONNECT "EXIT"
 #define SCAN "SCAN"
+#define NOFILE "NO_FILE!"
 #ifdef __cplusplus
 extern "C" {
 #endif

@@ -43,7 +43,7 @@ int tcps_scan(char * filename) {
         sprintf(answer,"OK!%d",(int)info.st_size);
         tcps_send(answer,128);
     } else {
-        tcps_send("KO!",4);
+        tcps_send(NOFILE,4);
     }
     free(answer);
     return(0);
