@@ -30,8 +30,23 @@ char * getfilename(char * query) {
      
      return token;
 }
+
 int getblocknumber(char * query) {
     return atoi(strchr(query, SEPARATOR)+1);
+}
+
+int tcps_scan(char * filename) {
+    struct stat info;
+    char * answer;
+    answer = calloc(128,sizeof(char));
+    if(fstat(open(filename), &info) !=0){
+        answer = sprintf("OK!%d",info.st_size);
+        tcps_send(answer,128);
+    } else {
+        tcps_send("KO!",4);
+    }
+    free(answer);
+    return(0);
 }
 
 int tcps_file(int port) {
@@ -63,7 +78,9 @@ int tcps_file(int port) {
                     printf("connecté\n");
                     do {
                         tcps_recv(queryrecv,BLOCK);
-                        if (strcmp(getfilename(queryrecv),UNCONNECT)!=0) {
+                        if (strcmp(getfilename(queryrecv),SCAN)) {
+                            tcps_scan(getfilename(queryrecv[5]));
+                        } else if (strcmp(getfilename(queryrecv),UNCONNECT)!=0) {
                             printf("ask for block number : %d of the file %s\n",getblocknumber(queryrecv),getfilename(queryrecv));
                             tcps_sendblock(getfilename(queryrecv),getblocknumber(queryrecv));
                             usleep(10);

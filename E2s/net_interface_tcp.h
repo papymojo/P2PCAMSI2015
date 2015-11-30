@@ -18,6 +18,7 @@
 #define BLOCK 4096
 #define SEPARATOR '!'
 #define UNCONNECT "EXIT"
+#define SCAN "SCAN"
 #ifdef __cplusplus
 extern "C" {
 #endif
