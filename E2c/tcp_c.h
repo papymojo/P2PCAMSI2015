@@ -19,8 +19,15 @@ extern "C" {
 #endif
 
 #define DATA_BLOCK 4096
+#define SCAN_FOR_FILE "SCAN"
+#define HAVE_FILE "OK"
+#define NO_FILE "NO_FILE"
     
-int p2p_tcp_connect (char* addr, int port_num);
+int port_number;
+    
+int p2p_tcp_connect (char* addr);
+int p2p_get_bloc (int server_sock, int block_num, char* filename);
+void p2p_scan_for_servers (int* servers_sockets, int nb_servers, char* filename, char** adresses);
 
 #ifdef __cplusplus
 }

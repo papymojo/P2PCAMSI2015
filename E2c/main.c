@@ -16,47 +16,21 @@
  * 
  */
 int main(int argc, char** argv) {
-    int sock_desc, file_desc, n;
-    char buffer[DATA_BLOCK];
-    char *request = malloc(sizeof(char) * (strlen(argv[3]) + 10));
+    int servers_sockets[4];
+    char** adresses = malloc(4*sizeof(char*));
+    adresses[0] = (char*) malloc(64);
     
     if (argc != 4) {
         printf("Usage: %s <addresse> <port_num> <path>\n", argv[0]);
         exit(-1);
     }
     
-    sock_desc = p2p_tcp_connect(argv[1], atoi(argv[2]));
-    file_desc = open(argv[3], O_CREAT | O_TRUNC | O_WRONLY);
+    port_number = atoi(argv[2]);
     
-    int block_num = 0;
-    do {
-        sprintf(request, "%s!%d", argv[3], block_num);
-        printf("Request: %s\n", request);
-        if (send(sock_desc, request, strlen(request), 0) == -1) {
-            perror("Sending request");
-            exit(-1);
-        }
-        
-        if ((n = recv(sock_desc, buffer, DATA_BLOCK, 0)) < 0) {
-            perror("Recieve");
-            exit(-1);
-        }
-        printf("Recieved.\n");
-        
-        if (strcmp(buffer, "EXIT!"))
-            write(file_desc, buffer, n);
-        else
-            break;
-        ++block_num;
-    } while(n == DATA_BLOCK);
+    strcpy(adresses[0], "localhost");
+    adresses[1] = (char*) NULL;
     
-    if (send(sock_desc, "EXIT!", 5, 0) == -1) {
-        perror("Sending disconnect request");
-        exit(-1);
-    }
-    
-    close(sock_desc);
-    close(file_desc);
+    p2p_scan_for_servers(servers_sockets, 2, argv[3], adresses);
     
     return (EXIT_SUCCESS);
 }
