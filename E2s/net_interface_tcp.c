@@ -79,6 +79,7 @@ int tcps_file(int port) {
                     do {
                         tcps_recv(queryrecv,BLOCK);
                         if (strcmp(getfilename(queryrecv),SCAN)==0) {
+                            printf("Scanning\n");
                             tcps_scan(getfilename(queryrecv+5));
                         } else if (strcmp(getfilename(queryrecv),UNCONNECT)!=0) {
                             printf("ask for block number : %d of the file %s\n",getblocknumber(queryrecv),getfilename(queryrecv));
