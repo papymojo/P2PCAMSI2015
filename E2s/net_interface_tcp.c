@@ -13,6 +13,8 @@
 #include <arpa/inet.h>
 #include <sys/socket.h>
 #include <sys/stat.h>
+#include <sys/types.h>
+#include <fcntl.h>
 #include "net_interface_tcp.h"
 
 struct sockaddr_in datas;
@@ -23,10 +25,10 @@ int fdc;
 char * getfilename(char * query) {
      char *token = malloc(strlen(query));
      strcpy(token, query);
-     
-     char* end = strchr(token, SEPARATOR);
-     *end = '\0';
 
+     char* end = strchr(token, SEPARATOR);
+     if (end != NULL)
+         *end = '\0';
      
      return token;
 }
@@ -39,14 +41,15 @@ int tcps_scan(char * filename) {
     struct stat info;
     char * answer;
     answer = calloc(128,sizeof(char));
-    if(fstat(open(filename), &info) !=0){
+    int n;
+    if((n=open(filename, O_RDONLY)) >= 0){
+        fstat(n, &info);
         sprintf(answer,"OK!%d",(int)info.st_size);
         tcps_send(answer,128);
-        printf(answer);
     } else {
-        tcps_send(NOFILE,4);
+        tcps_send(NOFILE,128);
     }
-    printf("\nScanned\n");
+    
     free(answer);
     return(0);
 }
@@ -80,8 +83,9 @@ int tcps_file(int port) {
                     printf("connecté\n");
                     do {
                         tcps_recv(queryrecv,BLOCK);
+                        printf("querry recieved! \"%s\"\n", queryrecv);
                         if (strcmp(getfilename(queryrecv),SCAN)==0) {
-                            printf("Scanning\n");
+                            printf("Scanning for file %s\n", queryrecv+5);
                             tcps_scan(getfilename(queryrecv+5));
                         } else if (strcmp(getfilename(queryrecv),UNCONNECT)!=0) {
                             printf("ask for block number : %d of the file %s\n",getblocknumber(queryrecv),getfilename(queryrecv));
