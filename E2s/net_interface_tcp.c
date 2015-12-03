@@ -42,9 +42,11 @@ int tcps_scan(char * filename) {
     if(fstat(open(filename), &info) !=0){
         sprintf(answer,"OK!%d",(int)info.st_size);
         tcps_send(answer,128);
+        sprintf(answer);
     } else {
         tcps_send(NOFILE,4);
     }
+    printf("\nScanned\n");
     free(answer);
     return(0);
 }
