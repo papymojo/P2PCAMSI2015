@@ -55,6 +55,7 @@ int p2p_get_bloc (int server_sock, int block_num, char* filename) {
     sprintf(request+strlen(request), "!%d", block_num);
     
     /* envoie de la reqûete au serveur*/
+    printf("send request   : %s\n", request);
     if (send(server_sock, request, strlen(request), 0) == -1) {
         perror("Sending request");
         exit(-1);
@@ -84,7 +85,8 @@ void p2p_scan_for_servers (int* servers_sockets, int nb_servers, char* filename,
         strcpy(request+filename_start, filename);
         
         /* envoie de la reqûete au serveur*/
-        printf("Requête: %s\n", request);
+        printf("send request   : %s\n", request);
+        printf("Request length : %d\n", (int)strlen(request));
         if (send(sock, request, strlen(request), 0) == -1) {
             perror("Sending request");
             exit(-1);
@@ -95,7 +97,7 @@ void p2p_scan_for_servers (int* servers_sockets, int nb_servers, char* filename,
             perror("Recieve");
             exit(-1);
         }
-        printf("recived %s\n", buffer);
+        printf("recieved %s\n", buffer);
         
         /* parsing de la réponse */
         if (str_startwith(buffer, HAVE_FILE)) {//le serveur a le fichier
@@ -114,4 +116,8 @@ void p2p_scan_for_servers (int* servers_sockets, int nb_servers, char* filename,
     }
     
     servers_sockets[num_server] = -1;
+}
+
+void p2p_save_block (FILE f, char* block) {
+    
 }

@@ -32,5 +32,7 @@ int main(int argc, char** argv) {
     
     p2p_scan_for_servers(servers_sockets, 2, argv[3], adresses);
     
+    
+    
     return (EXIT_SUCCESS);
 }
