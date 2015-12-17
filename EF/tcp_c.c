@@ -31,7 +31,7 @@ int str_startwith(const char* str1, const char* str2) {
 }
 
 /* return the socket descriptor */
-int p2p_tcp_connect(char* addr) {
+int p2p_tcp_connect(char* addr, int port_num) {
     int sock_fd;
     struct sockaddr_in sin = {0};
 
@@ -57,7 +57,7 @@ int p2p_tcp_connect(char* addr) {
 /* cherche les serveurs qui ont le fichier demandé
  * La liste des sockets de serveurs est terminée par 0.
  */
-void p2p_scan_for_servers(int* servers_sockets, int nb_servers, char* filename, char** adresses) {
+void p2p_scan_for_servers(int* servers_sockets, int nb_servers, char* filename, char** adresses, int port_num) {
     const int buffer_size = 256;
     int sock, filename_start, num_server = 0, i = 0;
     char request[256] = SCAN_FOR_FILE;
@@ -70,7 +70,7 @@ void p2p_scan_for_servers(int* servers_sockets, int nb_servers, char* filename, 
     /* pour chaque serveur */
     while (adresses[i] != NULL) {
         printf("scan server n° %d, addr %s\n", i, adresses[i]);
-        sock = p2p_tcp_connect(adresses[i]);
+        sock = p2p_tcp_connect(adresses[i], port_num);
         strcpy(request + filename_start, filename);
 
         /* envoie de la reqûete au serveur*/

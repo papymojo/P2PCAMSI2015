@@ -31,8 +31,8 @@ typedef struct block_s {
     
 int port_number;
     
-int p2p_tcp_connect (char* addr);
-void p2p_scan_for_servers (int* servers_sockets, int nb_servers, char* filename, char** adresses);
+int p2p_tcp_connect (char* addr, int port_num);
+void p2p_scan_for_servers (int* servers_sockets, int nb_servers, char* filename, char** adresses, int port_num);
 int tcps_sendblock(char * file,int block_num);
 void p2p_get_file(char* filename, int* servers, int nb_servers);
 int tcps_file(int port);

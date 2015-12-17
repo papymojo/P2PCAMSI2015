@@ -29,7 +29,7 @@ void client_process (int port_num, char** adresses) {
     int servers_sockets[NB_PEERS];
     
     /* récupération des serveurs possédant le fichier */
-    p2p_scan_for_servers(servers_sockets, 2, "image.png", adresses);
+    p2p_scan_for_servers(servers_sockets, 2, "image.png", adresses, port_num);
     
     /* récupération du fichier */
     p2p_get_file("image.png", servers_sockets, NB_PEERS);
