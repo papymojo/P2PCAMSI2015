@@ -85,7 +85,7 @@ int tcps_file(int port) {
 	fprintf(stderr, "listen : \n");
 	exit(EXIT_FAILURE);
     }
-    printf("en écoute \n");
+    printf("en écoute sur port %d.\n", port);
     for (;;) {
         if ((fdc = accept(fdl, NULL, 0)) < 0) {
             fprintf(stderr,"accept : \n");

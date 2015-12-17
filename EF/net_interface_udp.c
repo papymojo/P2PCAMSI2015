@@ -96,6 +96,8 @@ char** p2p_ping(int nb_client, char* ip, int port, unsigned int timeout) {
     } while(i < nb_client-1);
     
     addr[i] = NULL;
+    
+    close(fds);
             
     printf("groupe complet\n");
     return addr;
