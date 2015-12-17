@@ -41,7 +41,7 @@ int p2p_tcp_connect(char* addr) {
         exit(-1);
     }
 
-    sin.sin_addr.s_addr = htonl(addr);
+    sin.sin_addr.s_addr = inet_addr(addr);
     //inet_pton(AF_INET, addr, &(sin.sin_addr));
     sin.sin_port = htons(port_number);
     sin.sin_family = AF_INET;
