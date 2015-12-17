@@ -184,8 +184,10 @@ void* p2p_client_thread(void* a) {
         p2p_get_bloc(args->socket, block_num, args->filename, &block);
         if (str_startwith(block.data, END_FILE))
             break;
-        else
+        else {
+            printf("Sauvegarde du block n° %d\n", block_num);
             p2p_save_block(args->filename, &block, block_num);
+        }
     }
 
     return NULL;
