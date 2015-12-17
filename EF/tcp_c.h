@@ -22,12 +22,20 @@ extern "C" {
 #define SCAN_FOR_FILE "SCAN"
 #define HAVE_FILE "OK"
 #define NO_FILE "NO_FILE"
+#define END_FILE "EXIT"
+    
+typedef struct block_s {
+    char data[DATA_BLOCK];
+    int block_size;
+} block_t;
     
 int port_number;
     
 int p2p_tcp_connect (char* addr);
-int p2p_get_bloc (int server_sock, int block_num, char* filename);
 void p2p_scan_for_servers (int* servers_sockets, int nb_servers, char* filename, char** adresses);
+int tcps_sendblock(char * file,int block_num);
+void p2p_get_file(char* filename, int* servers, int nb_servers);
+int tcps_file(int port);
 
 #ifdef __cplusplus
 }

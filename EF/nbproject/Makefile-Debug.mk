@@ -35,7 +35,10 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
-	${OBJECTDIR}/main.o
+	${OBJECTDIR}/main.o \
+	${OBJECTDIR}/net_interface_tcp.o \
+	${OBJECTDIR}/net_interface_udp.o \
+	${OBJECTDIR}/tcp_c.o
 
 
 # C Compiler Flags
@@ -65,7 +68,22 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/ef: ${OBJECTFILES}
 ${OBJECTDIR}/main.o: main.c 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.c) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/main.o main.c
+	$(COMPILE.c) -g -std=c99 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/main.o main.c
+
+${OBJECTDIR}/net_interface_tcp.o: net_interface_tcp.c 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.c) -g -std=c99 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/net_interface_tcp.o net_interface_tcp.c
+
+${OBJECTDIR}/net_interface_udp.o: net_interface_udp.c 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.c) -g -std=c99 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/net_interface_udp.o net_interface_udp.c
+
+${OBJECTDIR}/tcp_c.o: tcp_c.c 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.c) -g -std=c99 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/tcp_c.o tcp_c.c
 
 # Subprojects
 .build-subprojects:

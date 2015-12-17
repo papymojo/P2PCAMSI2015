@@ -5,20 +5,33 @@
  * Created on 10 novembre 2015, 13:50
  */
 
+#define  _POSIX_C_SOURCE  1
+#define _XOPEN_SOURCE 500
+
 #include <stdlib.h>
 #include <stdio.h>
-#include <errno.h>
-#include <string.h>
+
 #include <unistd.h>
+#include <sys/types.h>
+
+#include <sys/stat.h>
+#include <fcntl.h>
+
+#include <errno.h>
+
+#include <string.h>
+#include <strings.h>
+
 #include <arpa/inet.h>
 #include <sys/socket.h>
-#include <sys/stat.h>
-#include <sys/types.h>
-#include <fcntl.h>
+
+#include <pthread.h>
+
+#include "tcp_c.h"
 #include "net_interface_tcp.h"
 
 struct sockaddr_in datas;
-char queryrecv[BLOCK];
+char queryrecv[DATA_BLOCK];
 int fdl;
 int fdc;
 
@@ -82,7 +95,7 @@ int tcps_file(int port) {
             case 0 :
                     printf("connecté\n");
                     do {
-                        tcps_recv(queryrecv,BLOCK);
+                        tcps_recv(queryrecv,DATA_BLOCK);
                         printf("querry recieved! \"%s\"\n", queryrecv);
                         if (strcmp(getfilename(queryrecv),SCAN)==0) {
                             printf("Scanning for file %s\n", queryrecv+5);
@@ -111,8 +124,9 @@ int tcps_file(int port) {
     }
 }
 
-int tcps_sendblock(char * file,int block) {
-    char buffer[BLOCK];
+int tcps_sendblock(char * file,int block_num) {
+    block_t b;
+    
     struct stat info;
     FILE *fp = fopen(file, "r+");
     fstat(fileno(fp), &info);
@@ -120,16 +134,15 @@ int tcps_sendblock(char * file,int block) {
         printf("ERROR:%s\n", file);
         exit(1);
     }
-    bzero(buffer, BLOCK);
+    bzero(b.data, DATA_BLOCK);
     int f_block_sz;
-    if (block*BLOCK >= info.st_size) {
+    if (block_num*DATA_BLOCK >= info.st_size) {
         tcps_send("EXIT!", 6);
         printf("EndOfFile\n");
     } else {
-        fseek(fp,block*BLOCK,SEEK_SET);
-        if ((f_block_sz = fread(buffer, sizeof (char), BLOCK, fp)) > 0) {
-            tcps_send(buffer, f_block_sz);
-            bzero(buffer, BLOCK);
+        fseek(fp,block_num*DATA_BLOCK,SEEK_SET);
+        if ((b.block_size = fread(b.data, sizeof (char), DATA_BLOCK, fp)) > 0) {
+            tcps_send((char*)&b, b.block_size+sizeof(b.block_size));
         }
     }
     printf("Fin d'envoi\n");

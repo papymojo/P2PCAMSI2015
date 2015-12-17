@@ -25,6 +25,11 @@ void handler (int signum) {
     return;
 }
 
+/*
+ * @param: timeout: seconds
+ * 
+ * @return: liste des adresses terminée par NULL
+ */
 char** p2p_ping(int nb_client, char* ip, int port, unsigned int timeout) {
     char** addr;
     char* buffer;
@@ -32,7 +37,7 @@ char** p2p_ping(int nb_client, char* ip, int port, unsigned int timeout) {
     /* traitement du timeout */
     signal(SIGALRM, handler);
     
-    addr = calloc(nb_client, sizeof(char*));
+    addr = calloc(nb_client+1, sizeof(char*));
     for (int i=0 ; i<nb_client ; ++i) {
         addr[i] = (char *) calloc(19, sizeof(char));
     }
@@ -53,28 +58,25 @@ char** p2p_ping(int nb_client, char* ip, int port, unsigned int timeout) {
     datas.sin_addr.s_addr = htonl(INADDR_ANY);
     datas.sin_family = AF_INET;
     datas.sin_port = htons(port);
-    if(bind (fds, &datas, sizeof(struct sockaddr_in)) < 0)
+    if(bind (fds, (struct sockaddr *)&datas, sizeof(struct sockaddr_in)) < 0)
     {
         perror("bind");
         exit(errno);
     }
     
     //communication (envoi de l'addresse dans le reseau)
-    strncpy(addr[0],ip,19);
     p2p_send(ip,19,port);
     
     /* lancement du timeur de timeout */
     alarm (timeout);
     /* attente de clients */
-    int r, i=1;
+    int r, i=0;
     do {
         
-        printf("En attente de reception ...\n");
+        printf("En attente de machines pour le groupe...\n");
         if (p2p_recieve(buffer,19) == -1) {
             return addr;
         }
-        
-        printf("Recieved: %s\n", buffer);
         
         /* on vérifie qu'on ne connais pas déjà ce client */
         r = 0;
@@ -83,14 +85,18 @@ char** p2p_ping(int nb_client, char* ip, int port, unsigned int timeout) {
                 r++;
             }
         }
-        if (r == 0) { // si on connais pas on ajoute à la liste de clients
+
+        if (r == 0 && strcmp(buffer, ip)) { // si on connais pas on ajoute à la liste de clients
+            printf("Nouvelle machine: %s\n", buffer);
             strncpy(addr[i], buffer, 19);
             p2p_send(ip,19,port);
             ++i;
         }
         
-    } while(i < nb_client);
+    } while(i < nb_client-1);
     
+    addr[i] = NULL;
+            
     printf("groupe complet\n");
     return addr;
 }
@@ -112,7 +118,7 @@ int p2p_send(char* buffer, int size,int port) {
     
     memset(&datac,0,sizeof(datac));
     datac.sin_family = AF_INET;
-    datac.sin_addr.s_addr = inet_addr(MULTICAST_ADDR);
+    datac.sin_addr.s_addr = inet_addr("255.255.255.255");
     datac.sin_port=htons(port);
     if (sendto(fdc, buffer, size, 0,(struct sockaddr *) &datac, sizeof(struct sockaddr_in)) < 0)
     {

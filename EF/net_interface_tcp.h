@@ -14,8 +14,6 @@
 #ifndef NET_INTERFACE_UDP_H
 #define NET_INTERFACE_UDP_H
 
-#define _XOPEN_SOURCE >= 500
-#define BLOCK 4096
 #define SEPARATOR '!'
 #define UNCONNECT "EXIT"
 #define SCAN "SCAN"
