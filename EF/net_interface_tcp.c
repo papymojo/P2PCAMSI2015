@@ -78,7 +78,7 @@ int tcps_file(int port) {
     datas.sin_port        = htons(port);
     
     if ( bind(fdl, (struct sockaddr *) &datas, sizeof(struct sockaddr)) < 0 ) {
-	fprintf(stderr, "bind : \n");
+	perror( "bind : \n");
 	exit(EXIT_FAILURE);
     }
     if ( listen(fdl,MAX_LINE) < 0 ) {

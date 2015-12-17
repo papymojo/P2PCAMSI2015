@@ -118,7 +118,7 @@ int p2p_send(char* buffer, int size,int port) {
     
     memset(&datac,0,sizeof(datac));
     datac.sin_family = AF_INET;
-    datac.sin_addr.s_addr = inet_addr("255.255.255.255");
+    datac.sin_addr.s_addr = inet_addr("192.168.0.255");
     datac.sin_port=htons(port);
     if (sendto(fdc, buffer, size, 0,(struct sockaddr *) &datac, sizeof(struct sockaddr_in)) < 0)
     {
